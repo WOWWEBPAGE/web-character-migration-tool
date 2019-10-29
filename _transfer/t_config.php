@@ -15,25 +15,25 @@
     $AchievementsMinCount   = 50;           // Minimum ammount of Achievements.
     $PLAYTIME               = 0;           // Minimum Playtime. Counted as: last archievment date - first archievment date
 
-    $AccountDB          = "auth"; // Your Account DB Name
+    $AccountDB          = "ww_realmd"; // Your Account DB Name
     $AccountDBHost      = "127.0.0.1";      // Your Account DB Host
     $DB_PORT         	= "3306";       // Your DB Port
     $DBUser             = "root";           // Your DB User
-    $DBPassword         = "root";       // Your DB Password
+    $DBPassword         = "9c17e6798334059a";       // Your DB Password
 
-    $SOAPUser           = "admin";          // SOAP USER
-    $SOAPPassword       = "admin";          // SOAP USER PASSWORD
-    $GMLevel            = "(3,4,5,6,7)";    // GM LEVEL ACCESS AVAIBLE CHECK TRANSFERS. IN BRACKETS AND SEPARATE WITH COMMA. EXAMPLE: "(3,4)"
+    $SOAPUser           = "7527735";          // SOAP USER
+    $SOAPPassword       = "arzheng10";          // SOAP USER PASSWORD
+    $GMLevel            = "(16383)";    // GM LEVEL ACCESS AVAIBLE CHECK TRANSFERS. IN BRACKETS AND SEPARATE WITH COMMA. EXAMPLE: "(3,4)"
 
-    $GAMEBUILD          = 12340;            // Game Build for available transfer. that mean transfers accept only from this build. DO NOT TOUCH.
+    $GAMEBUILD          = 8606;            // Game Build for available transfer. that mean transfers accept only from this build. DO NOT TOUCH.
     $STORAGE            = 0;                // Account Where story Rejected or Canceled Transfers
     $MaxMoney           = 200000000;        // Max Money, if more then it, then only this. put values in copper coins
     $MaxHP              = 75000;            // Max Honor Points, if more then it, then only this.
-    $MaxCL              = 80;               // Max Character level, if more then it, then only this.
+    $MaxCL              = 70;               // Max Character level, if more then it, then only this.
     $MaxAP              = 5000;             // Max Arena Points, if more then it, then only this.
                                             // if do not exist stay -1, if no then put info
     function _SOAPURISwitch($ID) {          // Realm ID = Realm ID From Realmlist table
-        $SOAPURI1  = "urn:TC";              // Realm 1 SOAP URI
+        $SOAPURI1  = "urn:MaNGOS";              // Realm 1 SOAP URI
         $SOAPURI2  = -1;                    // Realm 2 SOAP URI
         $SOAPURI3  = -1;                    // Realm 3 SOAP URI
         $SOAPURI4  = -1;                    // Realm 4 SOAP URI
@@ -102,7 +102,7 @@
     }
                                                     // if do not exist stay -1, if no then put info, FOR CHARACTERS DBs
     function _CharacterDBSwitch($ID) {              // Realm ID = Realm ID From Realmlist table
-        $CharactersDB1      = "characters";// Realm 1 Character DB
+        $CharactersDB1      = "ww_char";// Realm 1 Character DB
         $CharactersDB2      = -1;                   // Realm 2 Character DB
         $CharactersDB3      = -1;                   // Realm 3 Character DB
         $CharactersDB4      = -1;                   // Realm 4 Character DB

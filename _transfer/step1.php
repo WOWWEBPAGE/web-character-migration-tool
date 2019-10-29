@@ -38,42 +38,43 @@ if(isset($_POST['Account']) && !empty($_POST['Account'])    && isset($_POST['Pas
             $DUMP               = $part[1];
             $REALM_NAME         = $_POST['RealmlistList'];
             $DECODED_DUMP       = _DECRYPT($DUMP);
+            echo $DECODED_DUMP;
             $CHAR_REALM         = GetRealmID($AccountDBHost, $DB_PORT, $DBUser, $DBPassword, $AccountDB, $REALM_NAME);
             $CHAR_ACCOUNT_ID    = _GetCharacterAccountID();
+            //echo $CHAR_ACCOUNT_ID;
             $GM_ACCOUNT_ID      = CanOrNoTransferServer($AccountDBHost, $DB_PORT, $DBUser, $DBPassword, $AccountDB, $CHAR_REALM, $GMLevel);
             $json               = json_decode(stripslashes($DECODED_DUMP), true);
             $CHAR_NAME          = mb_convert_case(mb_strtolower($json['uinf']['name'], 'UTF-8'), MB_CASE_TITLE, 'UTF-8');
             $O_REALMLIST        = $json['ginf']['realmlist'];
             $O_REALM            = $json['ginf']['realm'];
             $RaceID             = _GetRaceID(strtoupper($json['uinf']['race']));
+            echo $RaceID  ;
             $ClassID            = _GetClassID(strtoupper($json['uinf']['class']));
             $CharLevel          = _MaxValue($json['uinf']['level'], $MaxCL);
 			//print_r($json);exit();
             $connection = mysqli_connect($AccountDBHost, $DBUser, $DBPassword,$AccountDB,$DB_PORT);
             _SelectDB($AccountDB, $connection);
-            $result = mysqli_query($connection,"SELECT `address`,`port` FROM `realmlist` WHERE `id` = ". $CHAR_REALM .";") or die(mysqli_error($connection));
+            $result = mysqli_query($connection,"SELECT `ip_address`,`port` FROM `realms` WHERE `realm_id` = ". $CHAR_REALM .";") or die(mysqli_error($connection));
             $row    = mysqli_fetch_array($result);
             $SPT    = $row['port'];
-            $SIP    = $row['address'];
+            $SIP    = $row['ip_address'];
             mysqli_close($connection);
 
             $AchievementsCount  = 0;
             $ACHMINTime         = 0;
             $ACHMAXTime         = 0;
-            foreach($json['achiev'] as $key => $value) {
-                if($ACHMINTime == 0)
-                    $ACHMINTime = $value['D'];
-                if($ACHMINTime > $value['D'])
-                    $ACHMINTime = $value['D'];
-                if($ACHMAXTime < $value['D'])
-                    $ACHMAXTime = $value['D'];
-                ++$AchievementsCount;
-            }
+            //foreach($json['achiev'] as $key => $value) {
+            //    if($ACHMINTime == 0)
+            //        $ACHMINTime = $value['D'];
+            //    if($ACHMINTime > $value['D'])
+            //        $ACHMINTime = $value['D'];
+            //    if($ACHMAXTime < $value['D'])
+            //        $ACHMAXTime = $value['D'];
+            //    ++$AchievementsCount;
+            //}
 
             if(CheckGameBuild($json['ginf']['clientbuild'], $GAMEBUILD)) {
                 $realson = _RT($write[50] ." ". $GAMEBUILD);
-            } else if(((10 + $CharLevel > $AchievementsCount) || ($AchievementsCount > $AchievementsMinCount)) && $AchievementsCheck == 1) {
-                $realson = _RT("Seems bad characters, not enought achievements!");
             } else if(CHECKDAY($ACHMAXTime, $ACHMINTime) < $PLAYTIME) {
                 $realson = _RT("Small playtime!");
             } else if(_CheckBlackList($AccountDBHost, $DB_PORT, $DBUser, $DBPassword, $AccountDB, $o_URL) ||
@@ -88,7 +89,7 @@ if(isset($_POST['Account']) && !empty($_POST['Account'])    && isset($_POST['Pas
                 $realson = _RT($write[99]);
             } else if(!_ServerOn($SIP, $SPT))
                 $realson = _RT("Realm: \"". $REALM_NAME ."\" <u>OFFLINE!</u>");
-
+            
             $GUID   = GetCharacterGuid(_HostDBSwitch($CHAR_REALM), $DB_PORT, $DBUser, $DBPassword, _CharacterDBSwitch($CHAR_REALM));
 
             if(empty($realson)) {
@@ -117,13 +118,13 @@ if(isset($_POST['Account']) && !empty($_POST['Account'])    && isset($_POST['Pas
             $QUERYFOREXECUTE    = "";
 
             $connection         = mysqli_connect(_HostDBSwitch($CHAR_REALM), $DBUser, $DBPassword,_CharacterDBSwitch($CHAR_REALM),$DB_PORT);
+            echo ("test</br>");
             mysqli_query($connection,"
-            INSERT INTO `characters`(`guid`,`account`,`name`,`level`,`gender`,`totalHonorPoints`,`arenaPoints`,`totalKills`,`money`,`class`,`race`,`at_login`,`taximask`,`online`) VALUES (
-            ". $GUID .",0,'". _X($connection,$CHAR_NAME) ."',". (int)$CharLevel .",". (int)$char_gender .",". (int)$char_honorpoints .",". (int)$char_arenapoints .",
-            ". (int)$char_totalkills .",".(int)$char_money .",". $ClassID .",". $RaceID .", 0x01, \"0 0 0 0 0 0 0 0 0 0 0 0 0 0\", 0);") or die(mysqli_error($connection));
+            INSERT INTO `characters`(`guid`,`account`,`name`,`level`,`gender`,`money`,`class`,`race`,`at_login`,`taximask`,`online`) VALUES (
+            ". $GUID .",0,'". _X($connection,$CHAR_NAME) ."',". (int)$CharLevel .",". (int)$char_gender . ",".(int)$char_money .",". $ClassID .",". $RaceID .", 0x01, \"0 0 0 0 0 0 0 0 0 0 0 0 0 0\", 0);") or die(mysqli_error($connection));
             $QUERYFOREXECUTE    = $QUERYFOREXECUTE. "
             INSERT INTO `character_transfer` VALUES (". $GUID .",". $CHAR_ACCOUNT_ID .",". $GM_ACCOUNT_ID .",". $ID .");
-
+ 
             UPDATE `characters` SET
             `position_x`    = 5741.36,
             `position_y`    = 626.982,
@@ -274,10 +275,10 @@ if(isset($_POST['Account']) && !empty($_POST['Account'])    && isset($_POST['Pas
             <tr><td><b>I want transfer to Realm: </b><select name=\"RealmlistList\">";
                 $connection = mysqli_connect($AccountDBHost, $DBUser, $DBPassword, $AccountDB, $DB_PORT);
                 _SelectDB($connection);
-                $result = mysqli_query($connection,"SELECT `id`,`name` FROM `realmlist` WHERE `TransferAvailable` = 1;");
+                $result = mysqli_query($connection,"SELECT `realm_id`,`name` FROM `realms` WHERE `TransferAvailable` = 1;");
                 mysqli_close($connection);
                 while($row = mysqli_fetch_array($result))
-                    echo "<option name=\"".$row['id']."\">". $row['name'] ."</option>";
+                    echo "<option name=\"".$row['realm_id']."\">". $row['name'] ."</option>";
             echo "</select><tr><td>
             <tr><td><div align = right class = \"MythTable\">". $TEXT5 ."</div></td></tr>
                 <tr><td><b>Server URL: </b><input name=\"ServerUrl\" type=\"text\" size=\"60\" style = \"float: right;\"></td></tr>

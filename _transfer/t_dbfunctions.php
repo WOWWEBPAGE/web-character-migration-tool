@@ -45,7 +45,7 @@
         //echo "<br> DELETE FROM `account_transfer_queue`;";
         $query = mysqli_query($connection,"DELETE FROM `account_transfer_queue`;") or die(mysqli_error($connection));
         //echo "<br> INSERT IGNORE INTO `account_transfer_queue`(`id`) SELECT `id` FROM `account_access`;";
-        $query = mysqli_query($connection,"INSERT IGNORE INTO `account_transfer_queue`(`id`) SELECT `id` FROM `account_access` WHERE `gmlevel` IN ". $GMLevel .";") or die(mysqli_error($connection));
+        $query = mysqli_query($connection,"INSERT IGNORE INTO `account_transfer_queue`(`id`) SELECT `account_id` FROM `account_permissions` WHERE `permission_mask` IN ". $GMLevel .";") or die(mysqli_error($connection));
         //echo "<br> SELECT `id` FROM `account_transfer_queue`";
         $query = mysqli_query($connection,"SELECT `id` FROM `account_transfer_queue`");
         mysqli_close($connection);
@@ -121,10 +121,10 @@
     function GetRealmID($DBHost, $DB_PORT, $DBUser, $DBPassword, $AccountDB, $Realm) {
         $connection = mysqli_connect($DBHost, $DBUser, $DBPassword,$AccountDB,$DB_PORT) or die(mysqli_error($connection));
         
-        $query = mysqli_query($connection,"SELECT `id` FROM `realmlist` WHERE `name` = \"". _X($connection,$Realm) ."\";") or die(mysqli_error($connection));
+        $query = mysqli_query($connection,"SELECT `realm_id` FROM `realms` WHERE `name` = \"". _X($connection,$Realm) ."\";") or die(mysqli_error($connection));
         $row = mysqli_fetch_array($query);
         mysqli_close($connection);
-        return $row['id'];
+        return $row['realm_id'];
     }
 
     function GetCharacterGuid($DBHost, $DB_PORT, $DBUser, $DBPassword, $CharactersDB) {
@@ -186,7 +186,7 @@
     function _CheckRealm($DBHost, $DB_PORT, $DBUser, $DBPassword, $AccountDB, $RealmID) {
         $connection = mysqli_connect($DBHost, $DBUser, $DBPassword,$AccountDB,$DB_PORT) or die(mysqli_error($connection));
 
-        $query = mysqli_query($connection,"SELECT `name` FROM `realmlist` WHERE `id` = ". $RealmID .";") or die(mysqli_error($connection));
+        $query = mysqli_query($connection,"SELECT `name` FROM `realms` WHERE `realm_id` = ". $RealmID .";") or die(mysqli_error($connection));
         $row = mysqli_fetch_array($query);
         mysqli_close($connection);
         return $row[0];
@@ -194,7 +194,7 @@
 
     function _CheckGMAccess($DBHost, $DB_PORT, $DBUser, $DBPassword, $AccountDB, $ID, $GMLevel) {
         $connection = mysqli_connect($DBHost, $DBUser, $DBPassword,$AccountDB,$DB_PORT) or die(mysqli_error($connection));
-        $query = mysqli_query($connection,"SELECT * FROM `account_access` WHERE `id` = ". $ID ." AND `gmlevel` IN ". $GMLevel .";") or die(mysqli_error($connection));
+        $query = mysqli_query($connection,"SELECT * FROM `account_permissions` WHERE `account_id` = ". $ID ." AND `permission_mask` IN ". $GMLevel .";") or die(mysqli_error($connection));
         $row = mysqli_fetch_array($query);
         mysqli_close($connection);
         return $row ? true : false;

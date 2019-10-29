@@ -13,8 +13,8 @@ $GLOBALS['config'] = array(
 		'host' 	   => '127.0.0.1',
 		'port' 	   => '3306',
 		'username' => 'root',
-		'password' => 'root',
-		'db' 	   => 'auth'
+		'password' => '9c17e6798334059a',
+		'db' 	   => 'ww_realmd'
 	),
 
 	'remember' => array(
@@ -31,7 +31,7 @@ $GLOBALS['config'] = array(
 	# USAGE CONFIG::GET('OLD/GAMEBUILD') WILL OUTPUT 12340
 	
 	'old' => array(
-		'gamebuild' => 12340
+		'gamebuild' => 8606
 	),
 );
 

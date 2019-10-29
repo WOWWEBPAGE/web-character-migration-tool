@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /*
  * Copyright (C) 2019+ MasterkinG32 <https://masterking32.com>
  * Copyright (C) 2017+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license: http://github.com/azerothcore/azerothcore-wotlk/LICENSE-GPL2
@@ -141,7 +141,7 @@
     }
 
     function _GetCharacterAccountID() {
-        return $_SESSION["id"];
+        return $_SESSION["account_id"];
     }
 
     function _CheckSkillLevel($cur) {
@@ -177,6 +177,8 @@
     }
 
     function _DECRYPT($STRING) {
+    	//echo strrev(base64_decode(strrev(strrev(base64_decode(strrev($STRING))))));
         return strrev(base64_decode(strrev(strrev(base64_decode(strrev($STRING))))));
+        //return $STRING;
     }
 ?>

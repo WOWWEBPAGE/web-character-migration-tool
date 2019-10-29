@@ -25,6 +25,7 @@ class User {
 					$this->_isLoggedIn = true;
 				} else {
 					//Logout
+					//$this->logout() ;
 				}
 			}
 		} else {
@@ -40,13 +41,17 @@ class User {
 
 	public function find($user = null) {
 		if($user) {
-			$field = (is_numeric($user)) ? 'id' : 'username';
+			echo $user;
+			//var_dump(is_numeric($user)) ;
+			$field = (is_numeric($user)) ? 'account_id' : 'username';
 			$data  = $this->_db->get('account', array($field, '=', $user));
-
+            //var_dump($data );
 			if($data->count()) {
 				$this->_data = $data->first();
-
 				return true;
+			}
+			else{
+			    echo "not find";
 			}
 		}
 	}
@@ -56,9 +61,9 @@ class User {
 		$hash = strtoupper(sha1(strtoupper(($username)).":".strtoupper(($password))));
 
 		if($user) {
-			if(strtoupper($this->data()->sha_pass_hash) == $hash) {
-				$_SESSION["id"] = $this->data()->id;
-				Session::put($this->_sessionName, $this->data()->id);
+			if(strtoupper($this->data()->pass_hash) == $hash) {
+				$_SESSION["account_id"] = $this->data()->account_id;
+				Session::put($this->_sessionName, $this->data()->account_id);
 
 				return true;
 			}

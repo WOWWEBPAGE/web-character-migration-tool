@@ -19,11 +19,11 @@
 
         $connection = mysqli_connect($AccountDBHost, $DBUser, $DBPassword, $AccountDB, $DB_PORT);
         _SelectDB($connection);
-        $result = mysqli_query($connection,"SELECT `name`,`address`,`port` FROM `realmlist` WHERE `id` = ". $RealmID .";") or die(mysqli_error($connection));
+        $result = mysqli_query($connection,"SELECT `name`,`ip_address`,`port` FROM `realms` WHERE `realm_id` = ". $RealmID .";") or die(mysqli_error($connection));
         $row    = mysqli_fetch_array($result);
         $SPT    = $row["port"];
         $SNA    = $row["name"];
-        $SIP    = $row["address"];
+        $SIP    = $row["ip_address"];
         mysqli_close($connection);
 
         if(!isset($_SESSION['guid']) || !isset ($_SESSION['realm']) || !isset($_SESSION['dumpID']) || $_SESSION['STEP2'] != "YES") {

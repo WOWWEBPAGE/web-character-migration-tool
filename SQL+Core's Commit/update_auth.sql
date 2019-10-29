@@ -2,7 +2,7 @@
 
 -- Comment it -- if not 1st time use this SQL
 -- DO NOT FORGET CHANGE TO "0" TO WHICH REALM YOU DON`T WANT MAKE AVAIBLE TRANSFER
-ALTER TABLE `realmlist` ADD COLUMN `TransferAvailable` INT(1) DEFAULT 1 NULL AFTER `gamebuild`;
+ALTER TABLE `realms` ADD COLUMN `TransferAvailable` INT(1) DEFAULT 1 NULL AFTER `allowed_builds`;
 
 DROP TABLE IF EXISTS `account_transfer`;
 CREATE TABLE `account_transfer` (
@@ -69,4 +69,4 @@ CREATE TABLE `account_transfer_guid` (
 -- DO NOT TOUCH THAT!
 INSERT INTO `account_transfer_guid` VALUES (0, 0, 0, 0, 0);
 -- Delete not existed gm acccess*/
-DELETE FROM `account_access` WHERE `id` NOT IN (SELECT `id` FROM `account`);
+-- DELETE FROM `account_access` WHERE `id` NOT IN (SELECT `id` FROM `account`);

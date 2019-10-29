@@ -23,7 +23,7 @@ require_once 'core/init.php';
     include_once("_transfer/t_dbfunctions.php");
     include_once("_transfer/t_config.php");
 
-    $ID = escape($user->data()->id);
+    $ID = escape($user->data()->account_id);
 ?>
 <table width = "800" align = "center" cellpadding = "0" cellspacing = "0">
     <tr><td align = "right"><?php echo $write[5]."<strong> ". mb_strtoupper(escape($user->data()->username), 'UTF-8') ."</strong>! || <a href=\"playerside.php\" class='generallink'>$write[6]</a> || <a href=\"logout.php\" class='generallink'>$write[7]</a>"; ?></td></tr>

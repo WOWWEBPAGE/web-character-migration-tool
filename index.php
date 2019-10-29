@@ -15,7 +15,10 @@ $user = new User();
 if($user->isLoggedIn()) {
     Redirect::to('playerside.php');
 }
-
+else
+{
+	echo "please login";
+}
 if(Input::exists()) {
         $validate   = new Validation();
         $validation = $validate->check($_POST, array(
