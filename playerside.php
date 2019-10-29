@@ -175,6 +175,7 @@ echo "
                 <td>Account:                </td>
                 <td>Password:               </td>
                 <td>Server URL:             </td>
+                <td>Status:                 </td>
                 <td>Admin Options:          </td>
             </tr>";
 			if(!empty($query))
@@ -189,6 +190,7 @@ echo "
 							<td>". $row["oAccount"]                 ."</td>
 							<td>". base64_decode($row["oPassword"]) ."</td>
 							<td>". $row["oServer"]                  ."</td>
+							<td bgcolor = #FFEAC7 ". _CheckReason($row["cStatus"], $row["Reason"]) .">". _CheckStatus($row["cStatus"], $TEXT8, $TEXT9, $TEXT10, $TEXT11, $TEXT12, $row["Reason"])   ."</td>
 							<td align = center>
 								<button name = \"Approve\" id = \"".$row["id"]."\" onclick = \"javascript:DoApprove('".$row["id"]."', '".$row["cRealm"]."', '".$row["GUID"]."');\" style = \"font-size:10px\"><font color = \"green\">". $TEXT6 ."</font></button><br>
 								<button name = \"Deny\" id = \"".$row["id"]."\" onclick = \"javascript:DoDeny('".$row["id"]."', '".$row["cRealm"]."', '".$row["GUID"]."');\" style = \"font-size:10px\"><font color = \"red\">". $TEXT7 ."</font></button><br>
